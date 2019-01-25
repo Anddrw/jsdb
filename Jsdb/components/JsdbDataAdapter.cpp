@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2019 Jsdb
+ *
+ * MIT License
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ */
+
 #include "JsdbComponent.hpp"
 
 using namespace jsdb;
@@ -13,7 +29,7 @@ bool DataAdapter::SetKey(std::string _key, json _value)
 	if (DataSource::getInstance().GetSize() >= keystoreMaxSize) {
 		LOG_WARNING("Keystore reached it's maximum size, future keys will not be added! ---> " + std::to_string(keystoreMaxSize));
 		// Throw an exception to prevent adding any other item from the current session
-		throw std::exception("Keystore reached it's maximum capacity!", 1030);
+		JSDB_THROW(adapter_error::create("Keystore reached it's maximum capacity!", 1030));
 	}
 	
 	if (IsSharded(_key)) {
@@ -48,7 +64,7 @@ bool DataAdapter::SetKey(std::string _key, json _value)
 		if (DataSource::getInstance().GetDS().count(_key) > 0) {
 			LOG_DEBUG("Keystore is currently running in readonly mode! Following key will not be modified: " + _key);
 			// Throw an exception to prevent adding any other item from the current session
-			throw std::exception("Keystore is currently running in readonly mode!", 1029);
+			JSDB_THROW(adapter_error::create("Keystore is currently running in readonly mode!", 1029));
 		}
 		else {
 			DataSource::getInstance().GetDS().insert({ _key, _j });

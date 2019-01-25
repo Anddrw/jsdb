@@ -14,3 +14,11 @@ add_executable (Jsdb "Jsdb.cpp" "Jsdb.hpp")
 # Link library
 target_link_libraries(Jsdb JsdbComponents ${Boost_LIBRARIES})
 # TODO: Add tests and install targets if needed.
+
+# Post-Build - clone jsdb.config-dist to the binary path
+add_custom_command(
+    TARGET Jsdb POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy
+            ${CMAKE_SOURCE_DIR}/jsdb.json-dist
+            ${CMAKE_CURRENT_BINARY_DIR}/jsdb.json
+)
