@@ -127,7 +127,7 @@ bool DataAdapter::IsExpired(std::string _key)
 		return false;
 	}
 
-	if ((CURRENT_TIMESTAMP() - _j["jsdb:keyttl"]) < 0) {
+	if ((CURRENT_TIMESTAMP() - _j["jsdb:keyttl"].get<int32_t>()) < 0) {
 		return false;
 	}
 
