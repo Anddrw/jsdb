@@ -1,15 +1,29 @@
-﻿// Jsdb.cpp : Defines the entry point for the application.
-//
+﻿/*
+ * Copyright (C) 2019 Jsdb
+ *
+ * MIT License
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ */
 
 #include "Jsdb.hpp"
 #include "JsdbComponent.hpp"
 
-// Standard Library
+/*< Standard library namespace >*/
 using namespace std;
-// Jsdb Main NS
+/*< Jsdb main namespace >*/
 using namespace jsdb;
 
-int main()
+/*< Main application entry point >*/
+int32_t main(int32_t argc, char* argv[])
 {
 	try
 	{
@@ -24,7 +38,7 @@ int main()
 		ios.run();
 	}
 	catch (std::exception& e) {
-		std::cerr << e.what() << std::endl;
+		LOG_ERROR(e.what());
 	}
 	return 0;
 }
