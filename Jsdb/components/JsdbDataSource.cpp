@@ -29,7 +29,7 @@ bool DataSource::initDS()
 	LOG_INFO("Trying to regenerate shards from: " + targetDir.generic_string());
 
 	// Check if the shards storage path exists, if not create it
-	if (boost::filesystem::is_directory(targetDir.relative_path())) {
+	if (!boost::filesystem::is_directory(targetDir.relative_path())) {
 		boost::filesystem::create_directory(targetDir.relative_path());
 	}
 
