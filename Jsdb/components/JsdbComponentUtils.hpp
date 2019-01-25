@@ -16,6 +16,8 @@
 
 #pragma once
 
+using namespace jsdb;
+
 template<typename T>
 constexpr auto LOG_DEBUG(T msg) { return Logger::getInstance().LogDebug(msg); }
 
