@@ -1,0 +1,8 @@
+{
+  "keystore.container.maxsize": 10000,
+  "keystore.ttl": 50,
+  "keystore.data.strategy": "overwrite",
+  "keystore.shards.path": "shards",
+  "log.output.format": "[{log.date}] {log.level}: {log.message}",
+  "log.output.date.format": "%Y%m%d"
+}
