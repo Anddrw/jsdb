@@ -23,6 +23,7 @@
 #include <chrono>
 #include <memory>
 #include <iomanip>
+#include <string>
 #include <date/date.hpp>
 #include <boost/foreach.hpp>
 #include <boost/algorithm/string/replace.hpp>
@@ -31,7 +32,10 @@
 #include <boost/format.hpp>
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
+#include <boost/program_options.hpp>
 #include <json/json.hpp>
 
 /*< Json library main namespace >*/
 using json = nlohmann::json;
+/*< Boost ASIO TCP >*/
+using boost::asio::ip::tcp;

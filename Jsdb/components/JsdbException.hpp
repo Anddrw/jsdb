@@ -82,4 +82,17 @@ namespace jsdb
 	private:
 		server_error(int id_, const char* what_arg) : exception(id_, what_arg) {}
 	};
+
+	class logic_error : public exception
+	{
+	public:
+		static logic_error create(const std::string& what_arg, int id_)
+		{
+			std::string w = exception::name("logic_error", id_) + what_arg;
+			return logic_error(id_, w.c_str());
+		}
+
+	private:
+		logic_error(int id_, const char* what_arg) : exception(id_, what_arg) {}
+	};
 }

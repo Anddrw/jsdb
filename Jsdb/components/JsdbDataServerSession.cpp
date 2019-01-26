@@ -17,8 +17,7 @@
 #include "JsdbComponent.hpp"
 
 using namespace jsdb;
-// Boost
-using boost::asio::ip::tcp;
+
 
 DataServerSession::DataServerSession(boost::asio::io_service& ios)
 	: _socket(ios) { }
@@ -149,11 +148,15 @@ std::string DataServerSession::ParseRequest(std::string _request)
 
 		return "STRRESPONSE";
 	}
-	catch (json::type_error e)
+	catch (jsdb::exception& e)
+	{
+		LOG_ERROR(e.what());
+	}
+	catch (json::type_error& e)
 	{
 		LOG_ERROR("DataServerSession --> ParseRequest() --> Type error thrown during request --> " + std::string(e.what()));
 	}
-	catch (std::exception e)
+	catch (std::exception& e)
 	{
 		LOG_ERROR("DataServerSession --> ParseRequest() --> Exception thrown during request --> " + std::string(e.what()));
 		

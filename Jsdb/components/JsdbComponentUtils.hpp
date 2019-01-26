@@ -34,6 +34,7 @@ template<typename T>
 constexpr auto LOG_NOTICE(T msg) { return Logger::getInstance().LogNotice(msg); }
 
 #define JSDB_THROW(exception) throw exception
+#define JSDB_EXIT_GRACEFULLY exit(0);
 
 /// 1030 - Keystore reached it's maximum capacity
 /// 1029 - Keystore is currently running in readonly mode!

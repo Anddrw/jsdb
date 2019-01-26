@@ -4,5 +4,7 @@
   "keystore.data.strategy": "overwrite",
   "keystore.shards.path": "shards",
   "log.output.format": "[{log.date}] {log.level}: {log.message}",
-  "log.output.date.format": "%Y%m%d"
+  "log.output.date.format": "%Y-%m-%d %X",
+  "networking.hostname": "127.0.0.1",
+  "networking.port":  7355
 }

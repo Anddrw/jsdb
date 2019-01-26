@@ -27,15 +27,52 @@ int32_t main(int32_t argc, char* argv[])
 {
 	try
 	{
-		LOG_INFO("Starting JsDb DataServer! at ~" + std::to_string(CURRENT_TIMESTAMP()));
+		/// Register argv input
+		Globals::getInstance().initArgv(argc, argv);
 		/// Initialize configuration
 		Config::getInstance().initConfig();
-		/// Load all existing shards before anything else
-		DataSource::getInstance().initDS();
-		/// Load io service
+		/// Initialize io service
 		boost::asio::io_service ios;
-		DataServer s(ios, 7355);
-		ios.run();
+		boost::shared_ptr< boost::asio::io_service::work > work(
+			new boost::asio::io_service::work(ios)
+		);
+		/// Check if jsdb should be started in console mode
+		if (Globals::getInstance().hasFlag("console"))
+		{
+			// @TODO: Fix Globals::getInstance().Get() --> Throws "bad cast"
+			DataClient c(
+				ios,
+				"127.0.0.1",
+				"7355"
+			);
+
+			Console console(c);
+			console.initConsole();
+			console.handleEvents();
+
+			work.reset();
+			ios.run();
+		}
+		else
+		{
+			/// Load all existing shards before anything else
+			DataSource::getInstance().initDS();
+			LOG_INFO("Jsdb server initialized");
+
+			/// Initialize networking
+			uint32_t _port = Config::getInstance()
+				.GetUInt32("networking.port", 7355);
+			std::string _hostname = Config::getInstance()
+				.GetString("networking.hostname", std::string());
+
+			DataServer s(ios, _port);
+			
+			work.reset();
+			ios.run();
+		}
+	}
+	catch (jsdb::exception& e) {
+		LOG_ERROR(e.what());
 	}
 	catch (std::exception& e) {
 		LOG_ERROR(e.what());

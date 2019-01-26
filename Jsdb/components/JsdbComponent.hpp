@@ -129,43 +129,66 @@ namespace jsdb
 			);
 		private:
 			boost::asio::io_service& ios;
-			boost::asio::ip::tcp::acceptor acceptor;
+			tcp::acceptor acceptor;
+	};
+	class DataClient
+	{
+	public:
+		DataClient(boost::asio::io_service& ios, std::string _hostname, std::string _port);
+		DataClient(DataClient const&);
+		virtual ~DataClient() {}
+		void operator=(DataClient const&);
+	private:
+		enum { max_length = 4096 };
+	public:
+		void Connect();
+		void Send(json _jsdbPayload);
+		json GetResponse();
+		tcp::socket& GetSocket();
+	private:
+		char _data[max_length];
+	private:
+		std::string _serverHostname;
+		std::string _serverPort;
+		tcp::socket _socket;
+		tcp::resolver _resolver;
+		std::string _lastResponse;
 	};
 	/** FileSystem */
 	class FileSystem
 	{
-		public:
-			static FileSystem& getInstance() {
-				static FileSystem instance;
-				return instance;
-			}
-		private:
-			FileSystem() {}
-			FileSystem(FileSystem const&);
-			virtual ~FileSystem() {}
-			void operator=(FileSystem const&);
+	public:
+		static FileSystem& getInstance() {
+			static FileSystem instance;
+			return instance;
+		}
+	private:
+		FileSystem() {}
+		FileSystem(FileSystem const&);
+		virtual ~FileSystem() {}
+		void operator=(FileSystem const&);
 	};
 	/** Configuration */
 	class Config
 	{
-		public:
-			static Config& getInstance() {
-				static Config instance;
-				return instance;
-			}
-		private:
-			Config();
-			Config(Config const&);
-			virtual ~Config() {}
-			void operator=(Config const&);
-		public:
-			void initConfig();
-		public:
-			std::string GetString(std::string _key, std::string _defValue = std::string());
-			int32_t GetInt32(std::string _key, int32_t _defValue = int32_t());
-			uint32_t GetUInt32(std::string _key, uint32_t _defValue = uint32_t());
-		private:
-			json _jsonConfig;
+	public:
+		static Config& getInstance() {
+			static Config instance;
+			return instance;
+		}
+	private:
+		Config();
+		Config(Config const&);
+		virtual ~Config() {}
+		void operator=(Config const&);
+	public:
+		void initConfig();
+	public:
+		std::string GetString(std::string _key, std::string _defValue = std::string());
+		int32_t GetInt32(std::string _key, int32_t _defValue = int32_t());
+		uint32_t GetUInt32(std::string _key, uint32_t _defValue = uint32_t());
+	private:
+		json _jsonConfig;
 	};
 	/** JSDB Logging component*/
 	class Logger
@@ -224,6 +247,51 @@ namespace jsdb
 			};
 		private:
 			SLogManagerOutputFormat _format;
+	};
+	/** Console input handling */
+	class Console
+	{
+	public:
+		static Console& getInstance(DataClient& _c) {
+			static Console instance(_c);
+			return instance;
+		}
+	public:
+		Console(DataClient& _c);
+		Console(Console const&);
+		~Console();
+		void operator=(Console const&);
+	public:
+		void initConsole();
+		void handleEvents();
+		void StatusLine();
+		void Output(std::string _out);
+	private:
+		DataClient& _client;
+	};
+	/** Globals */
+	class Globals
+	{
+	public:
+		static Globals& getInstance() {
+			static Globals instance;
+			return instance;
+		}
+	private:
+		Globals() {}
+		Globals(Globals const&) {}
+		virtual ~Globals() {}
+		void operator=(Globals const&);
+	public:
+		void initArgv(int32_t argc, char* argv[]);
+		bool hasFlag(std::string _flag);
+		std::string Get(std::string _flag);
+		std::string dump();
+	private:
+		void conflictingOptions(const boost::program_options::variables_map& vm, const char* opt1, const char* opt2);
+		void optionDependency(const boost::program_options::variables_map& vm, const char* for_what, const char* required_option);
+	private:
+		boost::program_options::variables_map _vm;
 	};
 }
 

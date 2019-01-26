@@ -50,7 +50,7 @@ void Logger::initFile()
 void Logger::initFormat()
 {
 	// Initialize all formats with default from configuration
-	_format.s_dateOutputFormat = Config::getInstance().GetString("log.output.date.format", "%Y%m%d");
+	_format.s_dateOutputFormat = Config::getInstance().GetString("log.output.date.format", "%Y-%m-%d %X");
 }
 
 void Logger::setErrorFormat(std::string fmt)
