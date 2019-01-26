@@ -1,5 +1,6 @@
 # Jsdb
-Jsdb is a in-memory json storage engine with high availability
+Jsdb is a in-memory json storage engine with high availability that aims to achieve full json-based key-value storage capabilities.
+All communication (requests and responses) are made using json.
 
 # Build status
 MSVC 14: OK
