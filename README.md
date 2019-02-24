@@ -4,7 +4,7 @@ All communication (requests and responses) are made using json.
 
 # Build status
 MSVC 14: OK
-GCC8: Fails
+GCC8: OK
 
 # Dependencies
 CMake >= 3.8
